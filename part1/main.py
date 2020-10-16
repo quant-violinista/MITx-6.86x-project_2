@@ -42,16 +42,13 @@ def run_linear_regression_on_MNIST(lambda_factor=1):
     return test_error
 
 
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=1))
 print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=0.1))
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=0.01))
 
 
 #######################################################################
 # 3. Support Vector Machine
 #######################################################################
 
-# TODO: first fill out functions in svm.py, or the functions below will not work
 
 def run_svm_one_vs_rest_on_MNIST(C=0.1):
     """
@@ -69,7 +66,6 @@ def run_svm_one_vs_rest_on_MNIST(C=0.1):
 
 
 print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST())
-print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST(C=0.01))
 
 
 def run_multiclass_svm_on_MNIST():
