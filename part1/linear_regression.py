@@ -1,6 +1,5 @@
 import numpy as np
 
-### Functions for you to fill in ###
 
 def closed_form(X, Y, lambda_factor):
     """
@@ -15,10 +14,9 @@ def closed_form(X, Y, lambda_factor):
         theta - (d + 1, ) NumPy array containing the weights of linear regression. Note that theta[0]
         represents the y-axis intercept of the model and therefore X[0] = 1
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
+    pseudo_inverse = np.linalg.inv(np.dot(np.transpose(X), X) + lambda_factor * np.identity(X.shape[1]))
+    return np.dot(pseudo_inverse.dot(np.transpose(X)), Y)
 
-### Functions which are already complete, for you to use ###
 
 def compute_test_error_linear(test_x, Y, theta):
     test_y_predict = np.round(np.dot(test_x, theta))
