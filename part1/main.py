@@ -114,8 +114,8 @@ def run_softmax_on_MNIST(temp_parameter=1):
     # Save the model parameters theta obtained from calling softmax_regression to disk.
     write_pickle_data(theta, "./theta.pkl.gz")
 
-    # TODO: add your code here for the "Using the Current Model" question in tab 4.
-    #      and print the test_error_mod3
+    _, test_y_mod3 = update_y(train_y, test_y)
+    print('test_error_mod_3   :', compute_test_error_mod3(test_x, test_y_mod3, theta, temp_parameter))
     return test_error
 
 
