@@ -16,7 +16,9 @@ def project_onto_PC(X, pcs, n_components, feature_means):
     #       of the eigenvectors returned by principal_components().
     #       Note that each eigenvector is already be a unit-vector,
     #       so the projection may be done using matrix multiplication.
-    raise NotImplementedError
+    X = X - feature_means.T
+    projection_matrix = pcs[0:pcs.shape[0], 0:n_components]
+    return np.dot(X, projection_matrix)
 
 
 ### Functions which are already complete, for you to use ###
@@ -65,17 +67,17 @@ def cubic_features(X):
     for i in range(n):
         newdata_colindex = col_index
         for j in range(d + 1):
-            new_data[i, newdata_colindex] = X_withones[i, j]**3
+            new_data[i, newdata_colindex] = X_withones[i, j] ** 3
             newdata_colindex += 1
             for k in range(j + 1, d + 1):
-                new_data[i, newdata_colindex] = X_withones[i, j]**2 * X_withones[i, k] * (3**(0.5))
+                new_data[i, newdata_colindex] = X_withones[i, j] ** 2 * X_withones[i, k] * (3 ** (0.5))
                 newdata_colindex += 1
 
-                new_data[i, newdata_colindex] = X_withones[i, j] * X_withones[i, k]**2 * (3**(0.5))
+                new_data[i, newdata_colindex] = X_withones[i, j] * X_withones[i, k] ** 2 * (3 ** (0.5))
                 newdata_colindex += 1
 
                 if k < d:
-                    new_data[i, newdata_colindex] = X_withones[i, j] * X_withones[i, k] * (6**(0.5))
+                    new_data[i, newdata_colindex] = X_withones[i, j] * X_withones[i, k] * (6 ** (0.5))
                     newdata_colindex += 1
 
     return new_data
