@@ -132,13 +132,33 @@ print('softmax test_error=', run_softmax_on_MNIST(temp_parameter=1))
 
 def run_softmax_on_MNIST_mod3(temp_parameter=1):
     """
-    Trains Softmax regression on digit (mod 3) classifications.
+    Trains Softmax regression on digit (mod 3) classifications, computes test error, and plots cost function.
 
-    See run_softmax_on_MNIST for more info.
+    Runs softmax_regression on the MNIST training set and computes the test error using
+    the test set. It uses the following values for parameters:
+    alpha = 0.3
+    lambda = 1e-4
+    num_iterations = 150
+
+    Saves the final theta to ./theta_mod3.pkl.gz
+
+    Returns:
+        Final test error
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+    train_y, test_y = update_y(train_y, test_y)
+    theta, cost_function_history = softmax_regression(train_x, train_y, temp_parameter, alpha=0.3, lambda_factor=1.0e-4,
+                                                      k=10, num_iterations=150)
+    plot_cost_function_over_time(cost_function_history)
+    test_error = compute_test_error(test_x, test_y, theta, temp_parameter)
+    # Save the model parameters theta obtained from calling softmax_regression to disk.
+    write_pickle_data(theta, "./theta_mod3.pkl.gz")
 
+    print('test_error_mod_3 native  :', compute_test_error_mod3(test_x, test_y, theta, temp_parameter))
+    return test_error
+
+
+print('softmax test_error mod 3=', run_softmax_on_MNIST_mod3(temp_parameter=1))
 
 # TODO: Run run_softmax_on_MNIST_mod3(), report the error rate
 
