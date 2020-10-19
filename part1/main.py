@@ -204,7 +204,44 @@ def run_softmax_on_MNIST_PCA(temp_parameter=1):
     return test_error
 
 
-print('softmax test_error pca=', run_softmax_on_MNIST_PCA(temp_parameter=1))
+# print('softmax test_error pca=', run_softmax_on_MNIST_PCA(temp_parameter=1))
+
+
+def run_softmax_on_MNIST_PCA_kernel(temp_parameter=1):
+    """
+    Trains softmax, classifies test data, computes test error, and plots cost function
+
+    Runs softmax_regression on the MNIST training set and computes the test error using
+    the test set. It uses the following values for parameters:
+    alpha = 0.3
+    lambda = 1e-4
+    num_iterations = 150
+
+    Saves the final theta to ./theta.pkl.gz
+
+    Returns:
+        Final test error
+    """
+    n_components = 10
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+    train_x_centered, feature_means = center_data(train_x)
+    pcs = principal_components(train_x_centered)
+    train_pca = cubic_features(project_onto_PC(train_x, pcs, n_components, feature_means))
+    test_pca = cubic_features(project_onto_PC(test_x, pcs, n_components, feature_means))
+    theta, cost_function_history = softmax_regression(train_pca, train_y, temp_parameter, alpha=0.3,
+                                                      lambda_factor=1.0e-4,
+                                                      k=10, num_iterations=150)
+    plot_cost_function_over_time(cost_function_history)
+    test_error = compute_test_error(test_pca, test_y, theta, temp_parameter)
+    # Save the model parameters theta obtained from calling softmax_regression to disk.
+    write_pickle_data(theta, "./theta_pca.pkl.gz")
+
+    print('test_error_pca   :', compute_test_error(test_pca, test_y, theta, temp_parameter))
+    plot_PC(train_x[range(000, 100),], pcs, train_y[range(000, 100)], feature_means)
+    return test_error
+
+
+print('softmax test_error pca kernel=', run_softmax_on_MNIST_PCA_kernel(temp_parameter=1))
 
 # # TODO: Use the reconstruct_PC function in features.py to show
 # #       the first and second MNIST images as reconstructed solely from
