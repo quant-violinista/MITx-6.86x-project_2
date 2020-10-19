@@ -56,8 +56,15 @@ def compute_cost_function(X, Y, theta, lambda_factor, temp_parameter):
     Returns
         c - the cost value (scalar)
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
+    n_k = (X.shape[0], theta.shape[0])
+    errors = np.zeros(n_k, dtype=np.float64)
+    one_hot = np.zeros(n_k, dtype=np.bool)
+    one_hot[np.arange(Y.shape[0]), Y] = True
+    objective = np.log(compute_probabilities(X, theta, temp_parameter).transpose(),
+                       out=errors, where=one_hot)
+    objective = -1 / Y.shape[0] * np.sum(objective)
+    objective += 0.5 * lambda_factor * np.sum(theta * theta)
+    return objective
 
 
 def run_gradient_descent_iteration(X, Y, theta, alpha, lambda_factor, temp_parameter):
@@ -77,8 +84,11 @@ def run_gradient_descent_iteration(X, Y, theta, alpha, lambda_factor, temp_param
     Returns:
         theta - (k, d) NumPy array that is the final value of parameters theta
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
+    probabilities = compute_probabilities(X, theta, temp_parameter)
+    point_labels = np.zeros(probabilities.shape, dtype=np.float64)
+    point_labels[Y, np.arange(Y.shape[0])] = 1.
+    gradient = -1 / (temp_parameter * Y.shape[0]) * np.dot(point_labels - probabilities, X) + lambda_factor * theta
+    return theta - alpha * gradient
 
 
 def update_y(train_y, test_y):
