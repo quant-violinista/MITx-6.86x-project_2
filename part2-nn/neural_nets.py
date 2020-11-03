@@ -62,10 +62,10 @@ class NeuralNetwork():
         input_values = np.matrix([[x1], [x2]])  # 2 by 1
 
         # Calculate the input and activation of the hidden layer
-        hidden_layer_weighted_input = np.dot(self.input_to_hidden_weights, input_values)
+        hidden_layer_weighted_input = np.matmul(self.input_to_hidden_weights, input_values) + self.biases
         hidden_layer_activation = vec_rectified_linear_unit(hidden_layer_weighted_input)
 
-        output = float(np.dot(self.hidden_to_output_weights, hidden_layer_activation))
+        output = float(np.matmul(self.hidden_to_output_weights, hidden_layer_activation))
         activated_output = output_layer_activation(output)
 
         cost = 0.5 * (y - activated_output) ** 2
@@ -95,9 +95,9 @@ class NeuralNetwork():
         input_values = np.matrix([[x1], [x2]])
 
         # Compute output for a single input(should be same as the forward propagation in training)
-        hidden_layer_weighted_input = np.dot(self.input_to_hidden_weights, input_values)
+        hidden_layer_weighted_input = np.matmul(self.input_to_hidden_weights, input_values) + self.biases
         hidden_layer_activation = vec_rectified_linear_unit(hidden_layer_weighted_input)
-        output = float(np.dot(self.hidden_to_output_weights, hidden_layer_activation))
+        output = float(np.matmul(self.hidden_to_output_weights, hidden_layer_activation))
         activated_output = output_layer_activation(output)
 
         return activated_output
